@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Technical Documentation</title>
+</head>
+<body>
+<h1>Subproject
+Reporitng Base</h1>
+<h2>Description</h2>
+This plugin contains classes that provide access to Ivy Project Report
+creation. Furthermore it cotains the&nbsp;encapsulation of
+a&nbsp;Birt engines to execute arbitrary reports and
+to create, access and modify Birt Report
+Designs and Libraries.<br>
+<h2>Birt Engine API</h2>
+To retrieve a BirtRuntimeManager one has to use the
+BirtRuntimeManagerFactory. It provides a singleton instance of the
+BirtRuntimeManager which can created the first time by calling
+<span style="font-style: italic;">createBirtRuntimeManger</span>
+or simply retrieved by <span style="font-style: italic;">getBirtRuntimeManager</span>.
+To create a BirtRuntimeManager a IApplicationConfigurationManager is
+needed, in order to set the System Property that may be used to change
+the Birt reporting engine home directory.<br>
+The BirtRuntimeManager is used to start, stop and provide the Birt
+Report&nbsp;and Design Engine. <br>
+Beside the ReportEngine and the DesignEngine, which are sufficient for
+nearly everything that can be done with Birt, the BirtRuntimeManage
+also provides some utility methods as <span style="font-style: italic;">getDesignParameters</span>
+to retrieve
+the parameters of a report design file, <span
+ style="font-style: italic;">getAvailableThemes</span>
+that
+provides the themes that are provided by a report design and its
+referenced libraries and <span style="font-style: italic;">createSimpleReport</span>
+which allows to create a
+simple report by providing the report name, path, formats and design
+file.<br>
+From the outside of this package the BirtRuntimeManager should only be
+accessed via its Interface IBirtRuntimeManager.<br>
+Exceptions that are thrown from the BirtRuntime plugin are packed into
+a BirtRuntimeException.
+<h2>Birt Engine Problems</h2>
+Because of a <a
+ href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=281865">Bug
+in the Birt Engine</a>
+there are currently problems restarting a the Birt Engines. The current
+workaround for this is that the BirtRuntime is never stopped. Please
+fix the <span style="font-style: italic;">stop()</span>
+code and the corresponding tests as soon as this issue is fixed.<br>
+<h2>Report Creation Process</h2>
+In order to create a report, a ReportingManager is required, which can
+by retrieved through its ReportingManagerFactory. The ReportingManager
+provides a runAndRenderReport(ReportConfiguration) method which does
+the actual report creation. How, where and with what data the report is
+to be created is described in the ReportConfiguration, which is passed
+as argument to this method. (See <a href="#Report_Configurations">Report
+Configurations</a>)<br>
+<br>
+The first thing that is done when creating a report is to fetch the
+Data that is to be reported. This is done by an instance of the
+ReportDataCollector
+which fetches the Data from the Xpert.Ivy Data Model and creates
+ReportDataEntries for every Report Element to be created. (See <a
+ href="#About_Report_Data_Entries">About
+Report Data Entries</a>)<br>
+All the Report Data is then cached in the *ReportData lists of the
+ReportDataCollector, which is accessible through the ReportingManager.
+The filtering of the Process Model Elements (e.g. Processes,
+RichDialogs, DataClasses, etc.) that should be included in the report
+is described in the ReportElementFilter which can be found in the
+ReportConfiguration.<br>
+<br>
+After the report data is retrieved the report design file (*.rptdesign)
+is opened and the right theme for the report is set. <br>
+Then the parameters of the report are set and the report is filled with
+data, resulting in&nbsp;a report document
+(*.rptdocument). Where the data for the report has to be fetched from
+is defined by the data sets of the report design. The EventHandlerClass
+Property of a dataset points to the Class, which must implement
+ReportingDataSetEventAdapter, that is to be called to get to the report
+data.<br>
+When the filled report document has been created, it can be rendered to
+the requested output formats.<br>
+All exceptions that are thrown from the Reporting Plugin to the
+'outside world' are of type ReportingException and wrap the original
+Exception if there is any.<br>
+<h2><a name="About_Report_Data_Entries"></a>About
+Report Data Entries</h2>
+A *ReportDataEntry contains the information for a&nbsp;smallest
+size
+data entry in the report. E.g. a ProcessReportDataEntry contains the
+data of
+&nbsp;single Process Element. This includes Process, ProcessGroup,
+Process Image and the Process Element Data of this Process Element.
+<br>
+This implies that multiple&nbsp;ProcessReportDataEntries carry,
+redundantly, the data of the same ancestors
+(that is
+Process, Process Group and Process Image). The reason why this has been
+solved like this, is that otherwise, every hierarchical level within
+a the Process Model would require a new DataSet in the report with a
+new DataSetEventAdapter class. Each DataSet of the report would then
+again need to be linked against it's parent (e.g. process model to
+application). This would result in a lot of more work to create a
+report design for the benefit of a slightly faster report generation.<br>
+But if report creation is too slow consider adding more normalized
+DataSets.<br>
+<h2><a name="Report_Configurations"></a>Report
+Configurations</h2>
+A ReportConfiguration contains the information that is used to create a
+report. That is formats, file system root, report name, design, theme,
+filter, details, title, header, footer and logo. Such a report
+configuration may also be persisted to an xml file. Therefore the
+ReportingManager provides a <span style="font-style: italic;">persistReportConfiguration(ReportConfiguration,
+String)</span> and a <span style="font-style: italic;">loadReportConfiguration(String)
+</span>method to save, respectively
+load and return a ReportConfiguration to/from a given path.<br>
+The XML Schema for the ReportConfiguration can be found in <span
+ style="font-style: italic;">Designer/reporting/configurations/XMLSchema/reportingConfig.xsd.</span><br>
+<small><span style="font-style: italic;"></span><span
+ style="font-style: italic;"><br>
+</span></small>
+<h2>Process Image Generators</h2>
+In order for the Reporting Plugin to generate images of processes an
+implementor of IProcessImageGenerator has to be registered in the
+ImageGeneratorRegistry. The reason why the image generator is not
+directly in the reporting plugin is, that it currently depends on some
+designer specific code which would result in cyclic dependencies
+between the plugins and therefore had to be moved up to the Designer
+(ch.ivyteam.ivy.designer.process.util.ProcessImageGenerator.java). The
+Server does currently not register an IProcessImageGenerator, because
+the code that generates the image is designer specific and it may not
+be possible to create AWT images on the server when no Graphical
+Environment is available. But this remains to be tested. Code that
+checks whether image creation is possible and registers the
+IProcessImageGenerator with the Reporting plugin from the Server
+remains to be implemented.<br>
+<h2><img style="width: 294px; height: 203px;"
+ alt="Plugin Hierarchy Image" src="images/PluginHierarchy.png"
+ align="top"></h2>
+<h2>Creating a new Reporting
+*.rptdesign File</h2>
+<h3>Get the Birt Report Designer</h3>
+To create a new report design (*.rptdesign) which can be used by the
+reporting plugin you need to install a Birt Report Designer. It exists
+a standalone version (Look at <a
+ href="http://download.eclipse.org/birt/downloads/">http://download.eclipse.org/birt/downloads/</a>)
+and as Eclipse Plugin which can be installed via a (normally
+preinstalled) update Site.<br>
+<h3><a name="Access_to_Xpert.ivy_data"></a>Create
+a report that has access to all the Xpert.Ivy data</h3>
+To create a new Report in Eclipse (using the Report Design
+Perspective): <span style="font-style: italic;">New -&gt; Other...
+-&gt; Report</span>.
+Then create a blank report. To let the report use the datasets, themes
+and parameters that will be handed to it upon report creation, we have
+to to open the ResourceExplorer View and navigate to <span
+ style="font-style: italic;">Designer/reporting/designs/Xpert.ivy.rptlibrary</span>
+and right click -&gt; <span style="font-style: italic;">Use Library...</span>.
+Now you should see the Library in the Outline. Now, still&nbsp;in
+the
+Resource Explorer, open the library&nbsp;and select each Report
+Parameter, Data Source and DataSet and right click -&gt; <span
+ style="font-style: italic;">Add to Report</span>.
+If you want to you can also apply a theme to your new report design,
+but this can also be done via right click on the shown report
+design-&gt; Theme-&gt;ApplyTheme or via our
+ReportConfigurationUI,
+which will show all the themes that are available by the libraries of
+the report design.<br>
+Congratulations, you now have a report that can use all the data that
+is provided by Xpert.Ivy. Unfortunately it is still empty... :-(<br>
+<h3>Fill the report with data from
+a single data set</h3>
+So, to get the data into the report you may create e.g. a <span
+ style="font-style: italic;">table</span>
+from the Palette View. This table can be linked to a dataset. I
+recommend to link your initial table to IvyProjects. From the
+DataExplorer view you can now select columns of the IvyProjects data
+set and drag&amp;drop them into the detail row of the table.
+However,
+as the IvyProjects dataset is not normalized (See <a
+ href="#About_Report_Data_Entries">About
+Report Data Entries</a>),
+the data of e.g. the Applications will be shown redundantly. To
+overcome this ugliness, tables may contain groups. By right click on
+the table -&gt; <span style="font-style: italic;">Insert Group</span>
+you can create a new group an select on which data set column you may
+want to group on (e.g. ApplicationName). Now you can add Application
+informations to the Application Group and ProcessModel information to
+the Details to get a nice hierarchy. Now you can hierarchically fill a
+report with data from a single data set. But what if we want also have
+the process data in the report, which is in a separate data set?<br>
+<h3>Linking data sets together</h3>
+To nest a data set within another data set, e.g. nest the IvyProcesses
+within the IvyProjects, we create another table, but this time within
+the other table. Again we have to select a DataSet binding, e.g.
+IvyProcesses. To have a linking between the outer data set(IvyProjects)
+and the inner data set(IvyProcesses), we have to right click on the
+inner table-&gt;<span style="font-style: italic;">Edit Data Binding</span>,
+click the <span style="font-style: italic;">Data
+Set Parameter Binding...</span>
+Button and double click the <span style="font-style: italic;">parentVersionName</span>
+Parameter. Now we can hand the inner data set a column from the outer
+data set, e.g. select <span style="font-style: italic;">Fx -&gt;
+Available
+Column Bindings -&gt; Table -&gt; VersionName</span>,
+double click. Now you have <span style="font-style: italic;">row["VersionName"]</span>
+set as expression, and every time this data set is opened, the <span
+ style="font-style: italic;">VersionName </span>of
+the ProcessModelVersion will be set as argument for the data set. The
+actual filtering of the Processes is then done in the
+ProcessDataSetEventAdapter.<br>
+<h3>What about the parameters?</h3>
+You now may wonder what all those Report Parameters, which you linked
+to your report design, are all about. If you look at the outline of
+your report design, you can see 5 report parameters: Technical Details,
+Title, Header, Footer, FromDesigner. Each is used for a certain task in
+the report, which is described here:<br>
+<ul>
+  <li>Technical Details is a
+boolean flag that indicates whether
+technical details of the report should be shown. When it is false, all
+technical information of the report is hidden. This is done by setting
+the Visibility property of table rows with&nbsp;technical details
+to Hide, when the Expression <span style="font-style: italic;">!params["Technical
+Details"].value </span>evaluates
+to true. To do so click on a table row -&gt; PropertyEditor View
+-&gt;
+Visibility -&gt; click Hide Element -&gt; write Expression.</li>
+  <li>Title, Header and Footer are
+String parameters that are used for
+the Master Page header and footer, and the subtitle of the title page
+in the layout.</li>
+  <li>FromDesigner is a boolean
+parameter that indicates whether this
+report was created from the Designer or the Server. It is currently
+used to hide the application when the report was generated from the
+Designer.</li>
+</ul>
+<h3>Other curiosities</h3>
+<ul>
+  <li>Why has the default report
+two tables of content? <br>
+A linked one for HTML and PDF and one without links for DOC. This is
+because Birt does not provide a table of contents for all report
+formats, but only for PDF (as PDF Bookmarks) and for HTML when viewed
+in the BirtReportViewer.<br>
+  </li>
+  <li>What about those Styles and
+Themes? <br>
+Themes are somehow like a CSS File. Themes define how elements of a
+report have to look like (e.g. font, size, color, &nbsp;background,
+etc.). Every report can have single theme. A theme consists of multiple
+styles. A style describes how the an element of a report has to look
+like. So, you have to define for each element (e.g. a table, a title,
+the whole report) which style it may have. The styles may also be
+cascaded like css and can also be imported from css.<br>
+More information about theming may be found here: <a
+ href="http://www.themeswiki.org/Creating_Themes_for_BIRT">http://www.themeswiki.org/Creating_Themes_for_BIRT<br>
+    <br>
+    </a></li>
+  <li>Birt que? No
+comprendo!&nbsp;Help!!!<br>
+For more information about Birt please take a look at a Birt book (e.g.
+BIRT A Field Guide to Reporting, or Integrating and Extending BIRT) or
+some online resources (e.g. <a
+ href="http://wiki.eclipse.org/Integration_Examples_%28BIRT%29">Birt
+Examples</a>, <a
+ href="http://www.birt-exchange.org/modules/documentation/birt-report-deployment.php#currentdocs">Birt
+API Documentation</a>, <a href="http://www.birt-exchange.org/">the
+Birt
+Community</a>, <a
+ href="http://www.eclipse.org/birt/phoenix/community/index.php#newsgroup">the
+Birt Newsgroup</a>, etc...). Good
+luck!</li>
+</ul>
+<h2>Extending the Report Library
+to support other Xpert.Ivy Data Elements</h2>
+Let's assume Xpert.Ivy gained a new Process Model Element. Let's call
+it <span style="font-style: italic;">CoffeeMachineConfiguration</span>.
+To add this new CoffeeMachineConfiguration to a report there are
+several things that have to be done, as creating a new
+DataSetEventAdapter, creating a new dataset in the Xpert.ivy
+library&nbsp;and linking the reports against the new data set. How
+this
+works in detail is described here.<br>
+<br>
+First we have to create a new
+CoffeeMachineConfigurationDataSetEventAdapter Class, which extends
+ReportingDataSetEventAdapter, which provides access to the
+ReportDataCollector. <br>
+This&nbsp;CoffeeMachineConfigurationDataSetEventAdapter must
+implement a <span style="font-style: italic;">open()</span>method
+which is called before a data set is
+used. In the open method you can fetch an iterator over
+your&nbsp;CoffeeMachineConfigurations and make it available to the
+fetch method. On the other hand you could also retrieve all the
+CoffeeMachineConfigurations from the ReportDataCollector and cache them
+there.<br>
+The <span style="font-style: italic;">fetch()</span>
+method fills one
+row of the data set with data and returns true if there is more more to
+be done and false if it has filled everything. In this method you can
+fetch all the attributes of your CoffeeMachineConfiguration (as e.g.
+coffee strength, coffee size, hasWater, hasCoffeeBeans, etc...) and
+write them to the row of your data set. When fetching the
+CoffeeMachineConfigurations they may also be filtered by&nbsp;the
+parameters that are handed to this
+dataset. For all data sets that appear within the IvyProjects data set
+this is currently the&nbsp;<span style="font-style: italic;">parentVersionName</span>
+parameter, which can be used to check if
+the&nbsp;CoffeeMachineConfiguration belongs to the given
+ProcessModelVersion name.<br>
+The <span style="font-style: italic;">close()
+</span>method can cleanup everything
+at the end.<br>
+<br>
+After having created the
+new&nbsp;CoffeeMachineConfigurationDataSetEventAdapter we have to
+add
+it to the library and the report. To do this, we open the report
+library <span style="font-style: italic;">(Xpert.ivy.rptlibrary)</span>
+and create a new data set (e.g. IvyCoffeeMachines) and create all the
+Columns that are needed for this DataSet (e.g. CoffeeStrength,
+CoffeeSize, HasWater, HasCoffeeBeans, etc.), which will be filled in
+the DataSetEventAdapter fetch method, and also add a new parameter,
+which will be accessible in the DataSetEventAdapter via <span
+ style="font-style: italic;">dataSet.getInputParameterValue("theParameterName").</span>
+Then we have to link the report data set to
+our&nbsp;CoffeeMachineConfigurationDataSetEventAdapter by selecting
+the
+data set -&gt; select the Property Editor View -&gt; Event
+Handler
+-&gt; select your DataSetEventAdapter. Now your DataSetEventAdapter
+will be called when information from this data set is required. <br>
+The only thing that is left to do is to link this data set to your
+report file. How this may be done is already described in the <a
+ href="#Access_to_Xpert.ivy_data">Create
+a report that has access to all the Xpert.Ivy data</a>&nbsp;chapter.<br>
+<h2>API</h2>
+The ReportingManagerFactory is the main access point to the
+ReportingManager. The Reporting manager creates for every Report that
+is created a ReportDataCollector which fetches the report data from the
+Ivy Data Model. For the ReportDataCollector to create images the
+Designer or Server need to register an Implementation of
+IProcessImageGenerator at the ImageGeneratorRegistry. Most
+ReportDataEntries are created by the ReportDataCollector and are also
+cached there for later use by the DataSetEventAdapters. The
+DataSetEventAdapters are invoked upon the filling of the report design,
+as the report design has defined which DataSets rely on which
+DataSetEventAdapters.&nbsp;<br>
+<img style="width: 876px; height: 816px;"
+ alt="Reporting UML Class Diagramm" src="images/ReportingUML.png">
+<h2>Packages</h2>
+<table style="text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <th>JavaDoc</th>
+      <td>Responsible</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><a
+ href="http://zugntsrv3/Ivydoc/Javadoc/4.1/trunk/All/ch/ivyteam/birt/internal/package-summary.html">ch.ivyteam.birt.internal</a></td>
+      <td>Jacques Stadler (,
+Michael D&auml;nzer)</td>
+      <td>&nbsp;The
+Implementation of&nbsp;the BirtRuntimeManager.</td>
+    </tr>
+    <tr>
+      <td><a
+ href="http://zugntsrv3/Ivydoc/Javadoc/4.1/trunk/All/ch/ivyteam/birt/extension/package-summary.html">ch.ivyteam.birt.extension</a></td>
+      <td>Jacques Stadler (,
+Michael D&auml;nzer)</td>
+      <td>The Birt PI Element
+which uses Birt to create Reports.</td>
+    </tr>
+    <tr>
+      <td><a
+ href="http://zugntsrv3/Ivydoc/Javadoc/4.1/trunk/All/ch/ivyteam/birt/restricted/package-summary.html">ch.ivyteam.birt.restricted</a></td>
+      <td>Jacques Stadler (,
+Michael D&auml;nzer)</td>
+      <td>The Interfaces and
+Factory to access the Birt Reporting Engines from Xpert.ivy.</td>
+    </tr>
+    <tr>
+      <td><a
+ href="http://zugntsrv3/Ivydoc/Javadoc/4.1/trunk/All/ch/ivyteam/ivy/reporting/internal/package-summary.html">ch.ivyteam.ivy.reporting.internal</a></td>
+      <td>Jacques Stadler (,
+Michael D&auml;nzer)</td>
+      <td>Implementation of the
+ReportingManager and ReportDataCollector.</td>
+    </tr>
+    <tr>
+      <td><a
+ href="http://zugntsrv3/Ivydoc/Javadoc/4.1/trunk/All/ch/ivyteam/ivy/reporting/internal/dataset/package-summary.html">ch.ivyteam.ivy.reporting.internal.dataset</a></td>
+      <td>Jacques Stadler (,
+Michael D&auml;nzer)</td>
+      <td>The DataSetEventAdapters
+that provide data to the report DataSets.</td>
+    </tr>
+    <tr>
+      <td><a
+ href="http://zugntsrv3/Ivydoc/Javadoc/4.1/trunk/All/ch/ivyteam/ivy/reporting/internal/dataset/entry/package-summary.html">ch.ivyteam.ivy.reporting.internal.dataset.entry</a></td>
+      <td>Jacques Stadler (,
+Michael D&auml;nzer)</td>
+      <td>The report data entries
+used by the DataSetEventAdapters.</td>
+    </tr>
+    <tr>
+      <td><a
+ href="http://zugntsrv3/Ivydoc/Javadoc/4.1/trunk/All/ch/ivyteam/ivy/reporting/restricted/package-summary.html">ch.ivyteam.ivy.reporting.restricted</a></td>
+      <td>Jacques Stadler (,
+Michael D&auml;nzer)</td>
+      <td>Reporting interfaces and
+classes used from other plugins.</td>
+    </tr>
+    <tr>
+      <td><a
+ href="http://zugntsrv3/Ivydoc/Javadoc/4.1/trunk/All/ch/ivyteam/ivy/reporting/restricted/config/package-summary.html">ch.ivyteam.ivy.reporting.restricted.config</a></td>
+      <td>Jacques Stadler (,
+Michael D&auml;nzer)</td>
+      <td>Reporting Configuration
+classes.</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
