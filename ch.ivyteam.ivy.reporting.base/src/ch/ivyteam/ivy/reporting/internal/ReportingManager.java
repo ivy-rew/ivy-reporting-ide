@@ -38,6 +38,7 @@ import ch.ivyteam.ivy.reporting.restricted.IBirtRuntimeManager;
 import ch.ivyteam.ivy.reporting.restricted.IReportingManager;
 import ch.ivyteam.ivy.reporting.restricted.ReportingException;
 import ch.ivyteam.ivy.reporting.restricted.config.ReportConfiguration;
+import ch.ivyteam.ivy.server.IServerExtension;
 import ch.ivyteam.log.Logger;
 
 /**
@@ -47,7 +48,7 @@ import ch.ivyteam.log.Logger;
  * @author jst
  */
 @Singleton
-public class ReportingManager extends AbstractManager implements IReportingManager
+public class ReportingManager extends AbstractManager implements IReportingManager, IServerExtension
 {
   private static final Logger LOGGER = Logger.getPackageLogger(ReportingManager.class);
 
@@ -498,5 +499,11 @@ public class ReportingManager extends AbstractManager implements IReportingManag
   public static Logger getLogger()
   {
     return LOGGER;
+  }
+
+  @Override
+  public String getIdentifier()
+  {
+    return ReportingManager.class.getName();
   }
 }

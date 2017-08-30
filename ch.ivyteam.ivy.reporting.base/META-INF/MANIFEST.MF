@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  com.ibm.icu;bundle-version="4.0.1";resolution:=optional,
  ch.ivyteam.ivy.process.data.persistence;bundle-version="6.7.1",
  ch.ivyteam.ivy.bpm.exec;bundle-version="6.7.1",
- ch.ivyteam.ivy.projectconfiguration.facade;bundle-version="6.7.1"
+ ch.ivyteam.ivy.projectconfiguration.facade;bundle-version="6.7.1",
+ ch.ivyteam.ivy.server;bundle-version="6.7.1"
 Bundle-Vendor: AXON IVY AG
 Bundle-ClassPath: patch.jar,
  .

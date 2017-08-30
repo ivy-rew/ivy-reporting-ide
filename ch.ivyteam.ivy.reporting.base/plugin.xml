@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="ch.ivyteam.ivy.reporting.restricted.IProcessImageGenerator" name="IProcessImageGenerator" 
+   schema="schema/ch.ivyteam.ivy.reporting.base.IProcessImageGenerator.exsd"/>
+   <extension
+         point="ch.ivyteam.ivy.server.IServerExtension">
+      <ivyServerExtension
+            class="ch.ivyteam.ivy.reporting.internal.BirtRuntimeManagerOsgi">
+      </ivyServerExtension>
+      <ivyServerExtension
+            class="ch.ivyteam.ivy.reporting.internal.ReportingManager">
+      </ivyServerExtension>
+   </extension>
+
+</plugin>

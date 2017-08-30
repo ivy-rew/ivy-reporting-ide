@@ -33,6 +33,7 @@ import ch.ivyteam.ivy.components.ZObject;
 import ch.ivyteam.ivy.datawrapper.DataWrapperFactory;
 import ch.ivyteam.ivy.datawrapper.DataWrapperNode;
 import ch.ivyteam.ivy.datawrapper.INameInfoExtended;
+import ch.ivyteam.ivy.extension.IvyExtensionPointManagerFactory;
 import ch.ivyteam.ivy.persistence.PersistencyException;
 import ch.ivyteam.ivy.process.IProcess;
 import ch.ivyteam.ivy.project.IIvyProject;
@@ -42,7 +43,6 @@ import ch.ivyteam.ivy.reporting.internal.dataset.entry.ProcessReportDataEntry;
 import ch.ivyteam.ivy.reporting.internal.dataset.entry.ProjectReportDataEntry;
 import ch.ivyteam.ivy.reporting.internal.dataset.entry.RichDialogReportDataEntry;
 import ch.ivyteam.ivy.reporting.restricted.IProcessImageGenerator;
-import ch.ivyteam.ivy.reporting.restricted.ImageGeneratorRegistry;
 import ch.ivyteam.ivy.reporting.restricted.ReportingException;
 import ch.ivyteam.ivy.reporting.restricted.config.ReportConfiguration;
 import ch.ivyteam.ivy.reporting.restricted.config.ReportElementFilter;
@@ -338,7 +338,7 @@ public class ReportDataCollector
     try
     {
       // Get the process image
-      IProcessImageGenerator processImageGenerator = ImageGeneratorRegistry.getProcessImageGenerator();
+      IProcessImageGenerator processImageGenerator = getProcessImageGenerator();
       byte[] processImageHighQuality = null;
       byte[] processImageLowQuality = null;
       if (processImageGenerator != null)
@@ -385,6 +385,19 @@ public class ReportDataCollector
     }
     
     return sortProcessReportDataEntries(result);
+  }
+
+  private IProcessImageGenerator getProcessImageGenerator()
+  {
+    try
+    {
+      List<IProcessImageGenerator> extensions = IvyExtensionPointManagerFactory.getIvyExtensionPointManager().getExtensionsSilent(IProcessImageGenerator.class);
+      return extensions.get(0);
+    }
+    catch (Exception ex)
+    {
+      throw new RuntimeException("Failed to resolve an "+IProcessImageGenerator.class.getSimpleName()+" implementation.", ex);
+    }
   }
 
   private List<ZObject> getSortedSubProcessNodes(ProjectReportDataEntry projDE, Enumeration<ZObject> subnodes)

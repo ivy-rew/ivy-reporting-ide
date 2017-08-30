@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import ch.ivyteam.ivy.manager.restricted.AbstractManager;
 import ch.ivyteam.ivy.reporting.restricted.IBirtRuntimeManager;
 import ch.ivyteam.ivy.reporting.restricted.ReportingException;
+import ch.ivyteam.ivy.server.IServerExtension;
 import ch.ivyteam.log.Logger;
 
 /**
@@ -43,7 +44,7 @@ import ch.ivyteam.log.Logger;
  * @author jst, kvg
  */
 @Singleton
-public class BirtRuntimeManagerOsgi extends AbstractManager implements IBirtRuntimeManager
+public class BirtRuntimeManagerOsgi extends AbstractManager implements IBirtRuntimeManager, IServerExtension
 {
   private static final Logger LOGGER = Logger.getClassLogger(BirtRuntimeManagerOsgi.class);
 
@@ -324,5 +325,11 @@ public class BirtRuntimeManagerOsgi extends AbstractManager implements IBirtRunt
       return (T)getDesignEngine();
     }
     throw new IllegalArgumentException("Unknown birt engine class "+birtEngineClass);
+  }
+
+  @Override
+  public String getIdentifier()
+  {
+    return BirtRuntimeManagerOsgi.class.getName();
   }
 }

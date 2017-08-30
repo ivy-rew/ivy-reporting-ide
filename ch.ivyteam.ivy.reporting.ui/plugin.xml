@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            description="The default Axon.ivy action set"
+            id="ivy2"
+            label="Axon.ivy2"
+            visible="true">
+            <menu
+               id="ivy2"
+               label="Axon.ivy2">
+         </menu>
+            <action
+               class="ch.ivyteam.ivy.designer.reporting.internal.ui.DesignerReportingFacade"
+               id="ch.ivyteam.ivy.designer.reporting.ui.createReportAction"
+               label="Create Report..."
+               menubarPath="ivy2/reporting"
+               tooltip="Create a new project process documentation...">
+         </action>
+      </actionSet>
+    </extension>
+</plugin>

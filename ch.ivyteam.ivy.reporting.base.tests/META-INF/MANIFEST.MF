@@ -55,7 +55,8 @@ Require-Bundle: ch.ivyteam.ivy.reporting.base;bundle-version="6.7.1",
  org.eclipse.birt.report.item.crosstab.core,
  org.eclipse.birt.report.model.adapter.oda,
  org.eclipse.birt.report.viewer,
- org.eclipse.birt.resources
+ org.eclipse.birt.resources,
+ ch.ivyteam.ivy.server.exec.tests;bundle-version="6.7.1"
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Bundle-ClassPath: patch.jar,
