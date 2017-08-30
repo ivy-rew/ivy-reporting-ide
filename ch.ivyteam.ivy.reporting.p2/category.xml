@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/ch.ivyteam.ivy.reporting.engine.feature_6.7.1.qualifier.jar" id="ch.ivyteam.ivy.reporting.engine.feature" version="6.7.1.qualifier"/>
+   <feature url="features/ch.ivyteam.ivy.reporting.designer.feature_6.7.1.qualifier.jar" id="ch.ivyteam.ivy.reporting.designer.feature" version="6.7.1.qualifier"/>
+</site>
