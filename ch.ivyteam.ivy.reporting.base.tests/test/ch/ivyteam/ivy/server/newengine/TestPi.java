@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.ivyteam.ivy.reporting.internal.BirtRuntimeManagerExternal;
@@ -19,6 +20,7 @@ import ch.ivyteam.util.Pair;
 import mockit.Mock;
 import mockit.MockUp;
 
+@Ignore("to much ivy test environment involved -> easier and more effective to test in eclipse RCPTT")
 public class TestPi extends AbstractProjectBasedServerTest
 {
   private static final File TEST_PROJECT = new File("testProjects/testNewEngine");
