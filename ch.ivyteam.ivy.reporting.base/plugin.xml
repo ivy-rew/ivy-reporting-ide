@@ -12,5 +12,11 @@
             class="ch.ivyteam.ivy.reporting.internal.ReportingManager">
       </ivyServerExtension>
    </extension>
+   <extension
+         point="ch.ivyteam.ivy.java.IIvyProjectClassPathExtension">
+      <ivyProjectClassPathExtension
+            class="ch.ivyteam.ivy.reporting.internal.ReportingClassPathExtension">
+      </ivyProjectClassPathExtension>
+   </extension>
 
 </plugin>
