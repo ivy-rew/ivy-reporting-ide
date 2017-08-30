@@ -13,8 +13,8 @@ import ch.ivyteam.di.restricted.DiCore;
 import ch.ivyteam.eclipse.util.EclipsePlatformUtils;
 import ch.ivyteam.io.FileUtil;
 import ch.ivyteam.ivy.designer.ide.DesignerIDEPlugin;
-import ch.ivyteam.ivy.designer.ide.DesignerIDETestsPlugin;
 import ch.ivyteam.ivy.designer.project.restricted.AbstractDesignerEclipseTest;
+import ch.ivyteam.ivy.designer.reporting.ReportingUiTestsPlugin;
 import ch.ivyteam.ivy.persistence.PersistencyException;
 import ch.ivyteam.ivy.process.IProcess;
 import ch.ivyteam.ivy.project.IIvyProject;
@@ -49,7 +49,7 @@ public class EclipseCoreTestReporting extends AbstractDesignerEclipseTest
    */
   public EclipseCoreTestReporting()
   {
-    super(DesignerIDETestsPlugin.getDefault().getBundle(), TEST_PROJECT_ZIP);
+    super(ReportingUiTestsPlugin.getDefault().getBundle(), TEST_PROJECT_ZIP);
   }
   
   /**
@@ -88,7 +88,7 @@ public class EclipseCoreTestReporting extends AbstractDesignerEclipseTest
    */
   private void compareReports(String reportName) throws IOException
   {    
-    File expectedReportFile = EclipsePlatformUtils.extractBundleEntry(DesignerIDETestsPlugin.getDefault().getBundle(), "testResources/" + reportName + ".html");
+    File expectedReportFile = EclipsePlatformUtils.extractBundleEntry(ReportingUiTestsPlugin.getDefault().getBundle(), "testResources/" + reportName + ".html");
     String contentExpectedReport = FileUtils.readFileToString(expectedReportFile, "UTF-8");
     contentExpectedReport = subStringReportContent(contentExpectedReport);
     contentExpectedReport = removeDynamicContentFromReport(contentExpectedReport);
@@ -135,11 +135,11 @@ public class EclipseCoreTestReporting extends AbstractDesignerEclipseTest
   private ReportConfiguration createReportConfiguration(String testReportName, String resultFileName) throws ResourceDataModelException, PersistencyException, IOException
   {
     // copy report from bundle
-    File reportBundleFile = EclipsePlatformUtils.extractBundleEntry(DesignerIDETestsPlugin.getDefault().getBundle(), "testResources/" + testReportName);
+    File reportBundleFile = EclipsePlatformUtils.extractBundleEntry(ReportingUiTestsPlugin.getDefault().getBundle(), "testResources/" + testReportName);
     File reportFile = new File(fTempReportSourceDirectory, testReportName);
     FileUtil.copy(reportBundleFile, reportFile);
     // copy library from bundle
-    File libBundleFile = EclipsePlatformUtils.extractBundleEntry(DesignerIDETestsPlugin.getDefault().getBundle(), "testResources/Xpert.ivy.rptlibrary");
+    File libBundleFile = EclipsePlatformUtils.extractBundleEntry(ReportingUiTestsPlugin.getDefault().getBundle(), "testResources/Xpert.ivy.rptlibrary");
     FileUtil.copy(libBundleFile, new File(fTempReportSourceDirectory, "Xpert.ivy.rptlibrary"));
     
     ReportElementFilter filter = createAndFillFilter();

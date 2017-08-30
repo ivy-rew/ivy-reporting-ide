@@ -1,9 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Reporting UI tests
-Bundle-SymbolicName: reporting.ui.tests
-Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: ch.ivyteam.ivy.reporting.ui.tests
+Bundle-Version: 6.7.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: reporting.ui;bundle-version="1.0.0",
+Require-Bundle: ch.ivyteam.ivy.reporting.ui;bundle-version="1.0.0",
  ch.ivyteam.ivy.designer.ide.tests;bundle-version="6.7.1",
  ch.ivyteam.ivy.reporting.base;bundle-version="6.7.1"
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: ch.ivyteam.ivy.designer.reporting.ReportingUiTestsPlugin

@@ -7,6 +7,6 @@
 		<version>6.7.1-SNAPSHOT</version>
 		<relativePath>../ch.ivyteam.ivy.reporting.maven</relativePath>
 	</parent>
-	<artifactId>ch.ivyteam.ivy.reporting.base</artifactId>
+	<artifactId>ch.ivyteam.ivy.reporting.ui</artifactId>
 	<packaging>eclipse-plugin</packaging>
 </project>

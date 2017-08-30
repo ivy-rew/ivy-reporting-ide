@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ch.ivyteam.ivy</groupId>
+	<artifactId>ch.ivyteam.ivy.reporting.modules</artifactId>
+	<version>6.7.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ch.ivyteam.ivy.reporting.maven</module>
+        <module>ch.ivyteam.ivy.reporting.base</module>
+        <module>ch.ivyteam.ivy.reporting.base.tests</module>
+        <module>ch.ivyteam.ivy.reporting.ui</module>
+        <module>ch.ivyteam.ivy.reporting.ui.tests</module>
+    </modules>
+</project>
