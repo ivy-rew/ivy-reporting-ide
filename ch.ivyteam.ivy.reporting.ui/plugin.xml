@@ -21,4 +21,9 @@
          </action>
       </actionSet>
     </extension>
+   <extension
+         point="ch.ivyteam.ivy.reporting.restricted.IProcessImageGenerator">
+      <ProcessImageGenerator
+            class="ch.ivyteam.ivy.designer.reporting.internal.ui.ZObjectProcessImageGenerator"></ProcessImageGenerator>
+   </extension>
 </plugin>
