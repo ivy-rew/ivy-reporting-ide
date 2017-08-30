@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ch.ivyteam.ivy.designer.birt.source.feature"
+      label="Platform.Birt.Source"
+      version="6.7.1.qualifier"
+      provider-name="AXON IVY AG">
+
+   <description url="http://www.example.com/description">
+      ivy birt platform light source
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <includes
+         id="org.eclipse.birt.source"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.birt.osgi.runtime.source"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.datatools.connectivity.feature.source"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.datatools.enablement.apache.derby.feature.source"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.datatools.enablement.oda.feature.source"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.datatools.modelbase.feature.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.apache.batik.css.source"
+         download-size="0"
+         install-size="0"
+         version="1.6.0.v201011041432"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.util.source"
+         download-size="0"
+         install-size="0"
+         version="1.6.0.v201011041432"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.util.gui.source"
+         download-size="0"
+         install-size="0"
+         version="1.6.0.v201011041432"
+         unpack="false"/>
+
+</feature>

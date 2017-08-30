@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ch.ivyteam.ivy.reporting.engine.feature_6.7.1.qualifier.jar" id="ch.ivyteam.ivy.reporting.engine.feature" version="6.7.1.qualifier"/>
-   <feature url="features/ch.ivyteam.ivy.reporting.designer.feature_6.7.1.qualifier.jar" id="ch.ivyteam.ivy.reporting.designer.feature" version="6.7.1.qualifier"/>
+   <feature url="features/ch.ivyteam.ivy.reporting.engine.feature_6.7.1.qualifier.jar" id="ch.ivyteam.ivy.reporting.engine.feature" version="6.7.1.qualifier">
+      <category name="ch.ivyteam.ivy.reporting"/>
+   </feature>
+   <feature url="features/ch.ivyteam.ivy.reporting.designer.feature_6.7.1.qualifier.jar" id="ch.ivyteam.ivy.reporting.designer.feature" version="6.7.1.qualifier">
+      <category name="ch.ivyteam.ivy.reporting"/>
+   </feature>
+   <feature url="features/ch.ivyteam.ivy.designer.birt.feature_6.7.1.qualifier.jar" id="ch.ivyteam.ivy.designer.birt.feature" version="6.7.1.qualifier">
+      <category name="ch.ivyteam.ivy.reporting"/>
+   </feature>
+   <feature url="features/ch.ivyteam.ivy.designer.birt.source.feature_6.7.1.qualifier.jar" id="ch.ivyteam.ivy.designer.birt.source.feature" version="6.7.1.qualifier">
+      <category name="ch.ivyteam.ivy.reporting"/>
+   </feature>
+   <feature url="features/org.eclipse.birt.osgi.runtime_4.4.2.v201410272105-BPD193GGgz0f84sEnFmpxHBA.jar" id="org.eclipse.birt.osgi.runtime" version="4.4.2.v201410272105-BPD193GGgz0f84sEnFmpxHBA">
+      <category name="ch.ivyteam.ivy.reporting"/>
+   </feature>
+   <category-def name="ch.ivyteam.ivy.reporting" label="BIRT reporting"/>
 </site>

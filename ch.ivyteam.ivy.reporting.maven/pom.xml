@@ -20,9 +20,9 @@
 			<url>https://download.axonivy.com/6.7.1/p2/</url>
 		</repository>
 		<repository>
-			<id>ivy.thirdparty.integration.luna</id>
+			<id>zugprorepo.platform.full</id>
+			<url>http://zugprorepo/p2_repositories/eclipseSimReleases/luna/SR2/</url>
 			<layout>p2</layout>
-			<url>http://zugprodrone:8080/p2/thirdparty.integration.luna/</url>
 		</repository>
 	</repositories>
 
