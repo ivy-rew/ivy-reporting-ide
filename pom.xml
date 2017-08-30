@@ -9,6 +9,7 @@
     <modules>
         <module>ch.ivyteam.ivy.reporting.maven</module>
         <module>ch.ivyteam.ivy.reporting.base</module>
+        <module>ch.ivyteam.ivy.reporting.engine.feature</module>
         <module>ch.ivyteam.ivy.reporting.base.tests</module>
         <module>ch.ivyteam.ivy.reporting.ui</module>
         <module>ch.ivyteam.ivy.reporting.ui.tests</module>
