@@ -9,4 +9,23 @@
 	</parent>
 	<artifactId>ch.ivyteam.ivy.reporting.p2</artifactId>
 	<packaging>eclipse-repository</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<id>default-assemble-repository</id>
+						<configuration>
+							<compress>false</compress>
+							<includeAllDependencies>false</includeAllDependencies>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

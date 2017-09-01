@@ -8,6 +8,9 @@
 
     <modules>
         <module>ch.ivyteam.ivy.reporting.maven</module>
+        <module>birt.feature</module>
+        <module>birt.source.feature</module>
+
         <module>ch.ivyteam.ivy.reporting.base</module>
         <module>ch.ivyteam.ivy.reporting.base.tests</module>
         <module>ch.ivyteam.ivy.reporting.engine.feature</module>
@@ -15,8 +18,5 @@
         <module>ch.ivyteam.ivy.reporting.ui.tests</module>
         <module>ch.ivyteam.ivy.reporting.designer.feature</module>
         <module>ch.ivyteam.ivy.reporting.p2</module>
-
-        <module>birt.feature</module>
-        <module>birt.source.feature</module>
     </modules>
 </project>
